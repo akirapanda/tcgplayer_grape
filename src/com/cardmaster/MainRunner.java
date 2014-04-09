@@ -20,7 +20,9 @@ import org.jsoup.select.Elements;
 public class MainRunner {
 
 	private static String findPrice(String api_url) {
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
+
 		HttpGet get = new HttpGet(api_url);
 		CloseableHttpResponse response;
 		String return_string = "";
@@ -48,7 +50,7 @@ public class MainRunner {
 			e.printStackTrace();
 			content = null;
 		}
-		return return_string;
+		return return_string + api_url + ",";
 	}
 
 	public static void main(String[] args) {
@@ -58,12 +60,13 @@ public class MainRunner {
 
 		Document doc;
 		String set = args[0];
-		int max_no = Integer.parseInt(args[1]);
+		int min_no = Integer.parseInt(args[1]);
+		int max_no = Integer.parseInt(args[2]);
 
 		try {
-			FileWriter fw = new FileWriter(set + ".txt", true);
+			FileWriter fw = new FileWriter(set + ".csv", true);
 
-			for (int i = 1; i < max_no + 1; i++) {
+			for (int i = min_no; i < max_no + 1; i++) {
 				doc = Jsoup.connect(
 						"http://magiccards.info/" + set + "/cn/" + i + ".html")
 						.get();
@@ -73,8 +76,10 @@ public class MainRunner {
 				for (Element element : newsHeadlines) {
 					String src = element.attr("src").toString();
 					if (src.indexOf("sid", 0) > 0) {
+						Thread.sleep(1000);
+
 						String price_str = MainRunner.findPrice(src);
-						String s = price_str + set + "," + i;
+						String s = price_str + set + "," + i + "\r\n";
 						fw.write(s, 0, s.length());
 						fw.flush();
 						break;
@@ -84,7 +89,6 @@ public class MainRunner {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
