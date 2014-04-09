@@ -55,9 +55,7 @@ public class MainRunner {
 	}
 
 	public static void main(String[] args) {
-		if (args.length < 2) {
-			System.exit(-1);
-		}
+
 
 		Document doc;
 		String set = "";
@@ -75,7 +73,7 @@ public class MainRunner {
 
 			for (int i = min_no; i < max_no + 1; i++) {
 				doc = Jsoup.connect(
-						"http://magiccards.info/" + set + "/cn/" + i + ".html")
+						"http://www.magiccards.info/" + set + "/cn/" + i + ".html")
 						.get();
 				System.out.println("抓取中，当前系列[" + set + "]第[" + i + "]张");
 				Elements newsHeadlines = doc.select("script");
