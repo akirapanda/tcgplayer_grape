@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,10 +60,16 @@ public class MainRunner {
 		}
 
 		Document doc;
-		String set = args[0];
-		int min_no = Integer.parseInt(args[1]);
-		int max_no = Integer.parseInt(args[2]);
-
+		String set = "";
+		int min_no = 1;
+		int max_no = 1;
+		Scanner in = new Scanner(System.in);
+		System.out.print("输入系列的英文小写缩写，通常3位:");
+		set = in.nextLine();
+		System.out.print("起始牌的编号，通常为1:");
+		min_no = Integer.parseInt(in.nextLine());
+		System.out.print("结束牌的编号，通常为该卡组的最大数量，如不知道填300，会自动中断:");
+		max_no = Integer.parseInt(in.nextLine());
 		try {
 			FileWriter fw = new FileWriter(set + ".csv", true);
 
@@ -87,6 +94,7 @@ public class MainRunner {
 				}
 				Thread.sleep(3000);
 			}
+			System.out.println("抓取价格完毕，请检查程序同一目录下的相应CSV文件！@CardMaster");
 
 		} catch (Exception e) {
 			e.printStackTrace();
